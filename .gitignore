@@ -1,0 +1,10 @@
+# Project exclude paths
+/common/target/
+/common/target/scala-2.12/classes/
+/common/target/scala-2.12/test-classes/
+/exercises/target/
+/exercises/target/scala-2.12/classes/
+/exercises/target/scala-2.12/test-classes/
+/project/project/target/
+/project/target/
+/target/
