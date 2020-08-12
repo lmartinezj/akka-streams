@@ -1,6 +1,7 @@
 package com.lightbend.akkassembly;
 
 import akka.stream.javadsl.Sink;
+import akka.stream.javadsl.Source;
 import org.junit.Test;
 
 import java.util.List;
@@ -21,5 +22,21 @@ public class WheelShopTest extends AkkaSpec {
                 .join();
 
         assertEquals(numberToRequest, wheels.size());
+    }
+
+    @Test
+    public void installWheels_shouldInstallFourWheelsOnEachCar() {
+        WheelShop wheelShop = new WheelShop();
+
+        List<UnfinishedCar> cars = Source.repeat(new UnfinishedCar())
+            .take(10)
+            .via(wheelShop.getInstallWheels())
+            .runWith(Sink.seq(), system)
+            .toCompletableFuture()
+            .join();
+
+        for(UnfinishedCar car : cars) {
+            assertEquals(4, car.getWheels().size());
+        }
     }
 }
