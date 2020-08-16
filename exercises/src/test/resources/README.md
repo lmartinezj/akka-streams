@@ -1,3 +1,3 @@
-fault-tolerance
+graphs
 
 Please refer to the instructions in the Lightbend Academy.

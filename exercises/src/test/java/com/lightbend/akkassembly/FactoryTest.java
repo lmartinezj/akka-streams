@@ -19,6 +19,7 @@ public class FactoryTest extends AkkaSpec {
         PaintShop paintShop = new PaintShop(new HashSet<>(Arrays.asList(color)));
         EngineShop engineShop = new EngineShop(20);
         WheelShop wheelShop = new WheelShop();
+        UpgradeShop upgradeShop = new UpgradeShop();
         QualityAssurance qualityAssurance = new QualityAssurance();
 
         Factory factory = new Factory(
@@ -27,6 +28,7 @@ public class FactoryTest extends AkkaSpec {
             engineShop,
             wheelShop,
             qualityAssurance,
+            upgradeShop,
             system
         );
 
@@ -47,12 +49,23 @@ public class FactoryTest extends AkkaSpec {
 
         assertEquals(expectedQuantity, engines.size());
 
-        List<Optional<Upgrade>> noUpgrades = cars.stream()
+        List<Optional<Upgrade>> upgrades = cars.stream()
                 .map(Car::getUpgrade)
-                .filter(opt -> !opt.isPresent())
                 .collect(Collectors.toList());
 
-        assertEquals(expectedQuantity, noUpgrades.size());
+        long totalNoUpgrade = upgrades.stream()
+                .filter(u -> !u.isPresent())
+                .count();
+        long totalDX = upgrades.stream()
+                .filter(u -> u.isPresent() && u.get() == Upgrade.DX)
+                .count();
+        long totalSport = upgrades.stream()
+                .filter(u -> u.isPresent() && u.get() == Upgrade.Sport)
+                .count();
+
+        assertEquals(expectedQuantity/3, totalNoUpgrade);
+        assertEquals(expectedQuantity/3, totalDX);
+        assertEquals(expectedQuantity/3, totalSport);
     }
 
 }

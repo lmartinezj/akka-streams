@@ -17,26 +17,19 @@ public class Factory {
     private final PaintShop paintShop;
     private final EngineShop engineShop;
     private final WheelShop wheelShop;
+    private final UpgradeShop upgradeShop;
     private final QualityAssurance qualityAssurance;
-    //private final Materializer materializer;
     private final ActorSystem system;
 
     Factory(BodyShop bodyShop, PaintShop paintShop,
-
             EngineShop engineShop, WheelShop wheelShop,
-            QualityAssurance qualityAssurance, Materializer materializer) {
-        this(bodyShop, paintShop, engineShop, wheelShop, qualityAssurance, materializer.system());
-    }
-
-
-
-    Factory(BodyShop bodyShop, PaintShop paintShop,
-            EngineShop engineShop, WheelShop wheelShop,
-            QualityAssurance qualityAssurance, ActorSystem system) {
+            QualityAssurance qualityAssurance, UpgradeShop upgradeShop,
+            ActorSystem system) {
         this.bodyShop = bodyShop;
         this.paintShop = paintShop;
         this.engineShop = engineShop;
         this.wheelShop = wheelShop;
+        this.upgradeShop = upgradeShop;
         this.qualityAssurance = qualityAssurance;
         this.system = system;
     }
@@ -46,6 +39,7 @@ public class Factory {
                 .via(paintShop.getPaint())
                 .via(engineShop.getInstallEngine())
                 .via(wheelShop.getInstallWheels())
+                .via(upgradeShop.getInstallUpgrades())
                 .via(qualityAssurance.getInspect())
                 .take(quantity)
                 .runWith(Sink.seq(), system);
