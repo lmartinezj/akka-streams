@@ -20,7 +20,7 @@ public class BodyShopTest extends AkkaSpec {
                 .toCompletableFuture()
                 .join();
 
-        assertEquals(5, cars.size());
+        assertEquals(6, cars.size());
     }
 
 }
