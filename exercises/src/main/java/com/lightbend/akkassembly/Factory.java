@@ -1,12 +1,6 @@
 package com.lightbend.akkassembly;
 
-import akka.NotUsed;
 import akka.actor.ActorSystem;
-import akka.actor.ActorSystem$;
-import akka.actor.Cancellable;
-import akka.stream.Materializer;
-import akka.stream.javadsl.Flow;
-import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 
 import java.util.List;
@@ -37,8 +31,11 @@ public class Factory {
     CompletionStage<List<Car>> orderCars(int quantity) {
         return bodyShop.getCars()
                 .via(paintShop.getPaint())
+                .async()
                 .via(engineShop.getInstallEngine())
+                .async()
                 .via(wheelShop.getInstallWheels())
+                .async()
                 .via(upgradeShop.getInstallUpgrades())
                 .via(qualityAssurance.getInspect())
                 .take(quantity)
