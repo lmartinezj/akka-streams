@@ -15,7 +15,6 @@ import java.util.concurrent.CompletionStage;
 
 class Auditor {
     private final Sink<Car, CompletionStage<Integer>> count;
-    //private final Materializer materializer;
     private final ActorSystem system;
 
 

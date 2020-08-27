@@ -30,14 +30,13 @@ public class Factory {
 
     CompletionStage<List<Car>> orderCars(int quantity) {
         return bodyShop.getCars()
-                .via(paintShop.getPaint())
+                .via(paintShop.getPaint().named("paint-stage"))
+                .via(engineShop.getInstallEngine().named("install-engine-stage"))
                 .async()
-                .via(engineShop.getInstallEngine())
+                .via(wheelShop.getInstallWheels().named("install-wheels-stage"))
                 .async()
-                .via(wheelShop.getInstallWheels())
-                .async()
-                .via(upgradeShop.getInstallUpgrades())
-                .via(qualityAssurance.getInspect())
+                .via(upgradeShop.getInstallUpgrades().named("install-upgrades-stage"))
+                .via(qualityAssurance.getInspect().named("inspect-stage"))
                 .take(quantity)
                 .runWith(Sink.seq(), system);
     }

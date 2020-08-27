@@ -1,11 +1,13 @@
 package com.lightbend.akkassembly;
 
 import akka.NotUsed;
-import akka.actor.Cancellable;
-import akka.stream.*;
-import akka.stream.javadsl.*;
-import com.typesafe.config.ConfigException;
-import scala.annotation.meta.field;
+import akka.stream.FlowShape;
+import akka.stream.UniformFanInShape;
+import akka.stream.UniformFanOutShape;
+import akka.stream.javadsl.Balance;
+import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.GraphDSL;
+import akka.stream.javadsl.Merge;
 
 class UpgradeShop {
     private final Flow<UnfinishedCar, UnfinishedCar, NotUsed> installUpgrades;
